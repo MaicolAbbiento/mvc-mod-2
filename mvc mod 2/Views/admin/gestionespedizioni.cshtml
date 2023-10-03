@@ -1,0 +1,35 @@
+﻿@using mvc_mod_2.Models
+@model List<Ordini>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Data Spedizione</th>
+            <th scope="col">Peso</th>
+            <th scope="col">Città</th>
+            <th scope="col">Indirizzo</th>
+            <th scope="col">Nominativo Destinatario</th>
+            <th scope="col">Costo</th>
+            <th scope="col">Descrizione</th>
+            <th scope="col">Data Consegna</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Ordini e in Model)
+        {
+            <tr>
+                <td>@e.Id</td>
+                <td>@e.Dataspedizione.ToShortDateString()</td>
+                <td>@e.Peso kg</td>
+                <td>@e.Citta</td>
+                <td>@e.Indirizzo</td>
+                <td>@e.NominativoDestinatario</td>
+                <td>@e.costo.ToString("C2")</td>
+                <td>@e.descrizione</td>
+                <td>@e.Datecosegna.ToShortDateString()</td>
+                @Html.ActionLink("Modifica", "Edit", new { id = e.Id }, new { @class = "btn btn-success" })
+                @Html.ActionLink("Elimina", "Delete", new { id = e.Id }, new { @class = "btn btn-danger" })
+            </tr>
+        }
+    </tbody>
+</table>
