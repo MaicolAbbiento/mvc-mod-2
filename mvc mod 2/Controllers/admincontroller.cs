@@ -26,6 +26,15 @@ namespace mvc_mod_2.Controllers
             return RedirectToAction("gestionespedizioni");
         }
 
+        public ActionResult dettagliprodotto(int id)
+        {
+            Ordini o = new Ordini();
+            o = o.getspedizione(id);
+            o.DataSpedizionestring = o.Dataspedizione.ToShortDateString();
+            o.DataConsegnastring = o.Datecosegna.ToShortDateString();
+            return View(o);
+        }
+
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -39,14 +48,55 @@ namespace mvc_mod_2.Controllers
         [HttpPost]
         public ActionResult Edit(Ordini p)
         {
-            Ordini o = new Ordini();
-            try { p.Dataspedizione = Convert.ToDateTime(p.DataSpedizionestring); }
-            catch { ViewBag.dataSpedizione = "inserire una data"; }
-            try { p.Datecosegna = Convert.ToDateTime(p.DataConsegnastring); }
-            catch { ViewBag.dataconsega = "inserire una data "; }
-
-            o.modificaOrdine(p);
+            if (ModelState.IsValid)
+            {
+                Ordini o = new Ordini();
+                try
+                {
+                    p.Dataspedizione = Convert.ToDateTime(p.DataSpedizionestring);
+                }
+                catch { ViewBag.dataSpedizione = "inserire una data"; }
+                try
+                {
+                    p.Datecosegna = Convert.ToDateTime(p.DataConsegnastring);
+                }
+                catch { ViewBag.dataconsega = "inserire una data"; }
+                if (ViewBag.dataSpedizione != "inserire una data" || ViewBag.dataconsega != "inserire una data")
+                {
+                    o.modificaOrdine(p);
+                }
+            }
             return View();
+        }
+
+        public ActionResult queryPage()
+        {
+
+            return View();
+        }
+
+        public JsonResult Getquery1()
+        {
+            Ordini p = new Ordini();
+            p.getqeury(1);
+
+            return Json(p.ordini);
+        }
+
+        public JsonResult Getquery2()
+        {
+            Ordini p = new Ordini();
+            p.getqeury(2);
+
+            return Json(p.ordini);
+        }
+
+        public JsonResult Getquery3()
+        {
+            Ordini p = new Ordini();
+            p.getqeury(2);
+
+            return Json(p.ordini);
         }
     }
 }

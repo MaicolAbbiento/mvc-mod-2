@@ -31,12 +31,15 @@ namespace mvc_mod_2.Controllers
             return View();
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult sigin([Bind(Exclude = "Admin,Errore")] Utente p)
         {
-            Utente utente = new Utente();
-            utente.addDb(p);
-
+            if (ModelState.IsValid)
+            {
+                Utente utente = new Utente();
+                utente.addDb(p);
+            }
             return RedirectToAction("spedizioni", "Ordini");
         }
     }

@@ -126,6 +126,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\dettagli.cs" />
     <Compile Include="Models\Ordini.cs" />
     <Compile Include="Models\SiteRole.cs" />
     <Compile Include="Models\Utente.cs" />
@@ -159,6 +160,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\JavaScriptCustom.js" />
+    <Content Include="Scripts\JavaScriptCustom2.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -185,6 +187,9 @@
     <Content Include="Views\admin\gestionespedizioni.cshtml" />
     <Content Include="Views\Ordini\spedizioni.cshtml" />
     <Content Include="Views\admin\Edit.cshtml" />
+    <Content Include="Views\admin\dettagliprodotto.cshtml" />
+    <Content Include="Views\Ordini\dettagli.cshtml" />
+    <Content Include="Views\admin\queryPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

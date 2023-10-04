@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace mvc_mod_2.Models
 {
@@ -12,18 +13,20 @@ namespace mvc_mod_2.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Il data obligatoria è obbligatorio")]
         public DateTime Dataspedizione { get; set; }
 
-        [Required(ErrorMessage = "Il data obligatoria è obbligatorio")]
         public string DataSpedizionestring { get; set; }
 
         public decimal Peso { get; set; }
+
         public string Citta { get; set; }
+
         public string Indirizzo { get; set; }
 
         public string NominativoDestinatario { get; set; }
+
         public decimal costo { get; set; }
+
         public string costoString { get; set; }
         public string descrizione { get; set; }
         public DateTime Datecosegna { get; set; }
@@ -87,8 +90,9 @@ namespace mvc_mod_2.Models
             {
                 string connetionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
                 SqlConnection conn = new SqlConnection(connetionString);
-                SqlCommand cmd = new SqlCommand("SELECT * FROM ordini where idcliente=@idcliente", conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM ordini where idcliente=@idcliente and idordini = @idordini ", conn);
                 cmd.Parameters.AddWithValue("idcliente", p.idcliente);
+                cmd.Parameters.AddWithValue("idordini", p.Id);
                 SqlDataReader sqlDataReader;
 
                 conn.Open();
@@ -211,9 +215,62 @@ namespace mvc_mod_2.Models
                 ordine.costo = Convert.ToInt64(sqlDataReader["costo"]);
                 ordine.descrizione = sqlDataReader["descrizione"].ToString();
                 ordine.Datecosegna = Convert.ToDateTime(sqlDataReader["Dataconsegna"]);
+                ordine.idcliente = Convert.ToInt32(sqlDataReader["Idcliente"]);
             }
             conn.Close();
             return ordine;
+        }
+
+        public void getqeury(int p1)
+        {
+            string connetionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
+            SqlConnection conn = new SqlConnection(connetionString);
+            try
+            {
+                SqlCommand cmd;
+                if (p1 == 1)
+                {
+                    cmd = new SqlCommand("SELECT * FROM ordini where Dataconsegna=getdate()", conn);
+                }
+                else
+                {
+                    cmd = new SqlCommand("SELECT * FROM ordini where Dataconsegna > @Dataconsegna", conn);
+                    cmd.Parameters.AddWithValue("Dataconsegna", DateTime.Now);
+                }
+                SqlDataReader sqlDataReader;
+                conn.Open();
+                sqlDataReader = cmd.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    Ordini ordine = new Ordini(
+
+                        Convert.ToInt32(sqlDataReader["Idordini"]),
+                        Convert.ToDateTime(sqlDataReader["Dataspedizione"]),
+                        Convert.ToDecimal(sqlDataReader["peso"]),
+                        sqlDataReader["Città"].ToString(),
+                        sqlDataReader["Indirizzo"].ToString(),
+                        sqlDataReader["NominativoDestinatario"].ToString(),
+                         Convert.ToInt32(sqlDataReader["costo"]),
+                        sqlDataReader["descrizione"].ToString(),
+                       Convert.ToDateTime(sqlDataReader["Dataconsegna"])
+                       );
+                    ordini.Add(ordine);
+                }
+            }
+            catch { }
+            finally { conn.Close(); }
+
+
+        }
+
+        public List<Ordini> query3()
+        {
+            string connetionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
+            SqlConnection conn = new SqlConnection(connetionString);
+            SqlCommand cmd = new SqlCommand("select città,  count(*) from ordini group by città", conn);
+            List<Ordini> ordini;
+            return ordini = new List<Ordini>();
         }
     }
 }

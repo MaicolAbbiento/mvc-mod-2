@@ -1,0 +1,18 @@
+﻿@model mvc_mod_2.Models.Ordini
+
+<h2>dettagli prodotto</h2>
+
+<div class="row">
+    <div class="col-4">
+        <p> <span class="fw-bold">id cliente</span> @Model.idcliente </p>
+        <p> <span class="fw-bold">mitente </span> @Model.NominativoDestinatario @User.Identity.Name </p>
+        <p> <span class="fw-bold">destinazione</span> @Model.Citta </p>
+        <p> <span class="fw-bold">indirizzo</span> @Model.Indirizzo </p>
+
+        <p> <span class="fw-bold"> peso </span> @Model.Peso kg </p>
+        <p> <span class="fw-bold">prezzo</span> @Model.costo.ToString("C2") </p>
+        <p> <span class="fw-bold">Data di Spedizione </span> @Model.DataSpedizionestring </p>
+        <p> <span class="fw-bold">Data di consegna</span> @Model.DataConsegnastring </p>
+        <p> <span class="fw-bold">id spedizione</span> @Model.Id </p>
+    </div>
+</div>

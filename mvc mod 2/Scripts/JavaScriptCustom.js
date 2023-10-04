@@ -7,7 +7,8 @@
             data: { numerospedizione: idSpedizione },
             success: function (data) {
                 $("#table").empty()
-                let spedizone = ` <thead>
+                if (data.length > 0) {
+                    let spedizone = ` <thead>
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Data Spedizione</th>
@@ -23,7 +24,9 @@
     <tbody id=a>
     </tbody>
     `
-                $("#table").append(spedizone)
+                    $("#table").append(spedizone)
+                }
+                else { $("#divdettagli").slideUp() }
                 $.each(data, function (n, e) {
                     $("#a").empty()
                     let spedizone = `
@@ -36,7 +39,8 @@
             <td>${e.NominativoDestinatario}</td>
             <td>${e.costoString}</td>
             <td>${e.descrizione}</td>
-            <td>${e.DataConsegnastring}</td>
+            <td>${e.DataConsegnastring} <a class="btn btn-info" href= "dettagli/${e.Id}"> dettagli</a>
+            </td>
         </tr>`
 
                     $("#a").append(spedizone)

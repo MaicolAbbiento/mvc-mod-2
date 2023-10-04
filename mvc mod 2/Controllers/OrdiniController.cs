@@ -10,6 +10,8 @@ namespace mvc_mod_2.Controllers
 {
     public class OrdiniController : Controller
     {
+        private Ordini ordini = new Ordini();
+
         [Authorize]
         public ActionResult spedizioni()
         {
@@ -19,7 +21,6 @@ namespace mvc_mod_2.Controllers
         [HttpPost]
         public JsonResult GetPersonByNome(string numerospedizione)
         {
-            Ordini ordini = new Ordini();
             if (numerospedizione == "")
             {
                 numerospedizione = "0";
@@ -33,9 +34,17 @@ namespace mvc_mod_2.Controllers
                 ordini1.DataConsegnastring = ordini1.Datecosegna.ToShortDateString();
                 ordini1.costoString = String.Format("{0:C}", ordini1.costo);
             }
+
             return Json(o);
         }
 
-       
+        public ActionResult dettagli(int id)
+        {
+            dettagli dettagli = new dettagli();
+
+            dettagli.dattagli(id);
+
+            return View(dettagli.lista);
+        }
     }
 }

@@ -1,0 +1,22 @@
+﻿@using mvc_mod_2.Models
+@model List<dettagli>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">numero aggiornamento</th>
+            <th scope="col">ora aggiorinamento</th>
+            <th scope="col">descrizione</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (dettagli d in Model)
+        {
+            <tr>
+                <td> @d.idaggiornamenti</td>
+                <td> @d.dataAggiornamento</td>
+                <td> @d.descrizione</td>
+            </tr>
+        }
+    </tbody>
+
+    </table>
