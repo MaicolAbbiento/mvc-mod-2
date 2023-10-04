@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
@@ -10,8 +11,13 @@ namespace mvc_mod_2.Models
     public class Ordini
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Il data obligatoria è obbligatorio")]
         public DateTime Dataspedizione { get; set; }
+
+        [Required(ErrorMessage = "Il data obligatoria è obbligatorio")]
         public string DataSpedizionestring { get; set; }
+
         public decimal Peso { get; set; }
         public string Citta { get; set; }
         public string Indirizzo { get; set; }
@@ -109,6 +115,7 @@ namespace mvc_mod_2.Models
                 return ordini;
             }
         }
+
         public List<Ordini> getAllspedizioni()
         {
             string connetionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
@@ -129,7 +136,7 @@ namespace mvc_mod_2.Models
                     sqlDataReader["Città"].ToString(),
                     sqlDataReader["Indirizzo"].ToString(),
                     sqlDataReader["NominativoDestinatario"].ToString(),
-                     Convert.ToInt32(sqlDataReader["costo"]),
+                    Convert.ToInt64(sqlDataReader["costo"]),
                     sqlDataReader["descrizione"].ToString(),
                    Convert.ToDateTime(sqlDataReader["Dataconsegna"])
                    );
@@ -137,6 +144,76 @@ namespace mvc_mod_2.Models
             }
             conn.Close();
             return ordini;
+        }
+
+        public void modificaOrdine(Ordini p)
+        {
+            string connetionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
+            SqlConnection conn = new SqlConnection(connetionString);
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = " update ordini set Dataspedizione = @Dataspedizione, peso = @peso, città = @città, indirizzo = @indirizzo, nominativoDestinatario = @nominativoDestinatario, costo = @costo, descrizione = @descrizione, Dataconsegna= @Dataconsegna where Idordini = @Idordini ";
+                cmd.Parameters.AddWithValue("Dataspedizione", p.Dataspedizione);
+                cmd.Parameters.AddWithValue("peso", p.Peso);
+                cmd.Parameters.AddWithValue("città", p.Citta);
+                cmd.Parameters.AddWithValue("indirizzo", p.Indirizzo);
+                cmd.Parameters.AddWithValue("nominativoDestinatario", p.NominativoDestinatario);
+                cmd.Parameters.AddWithValue("costo", p.costo);
+                cmd.Parameters.AddWithValue("descrizione", p.descrizione);
+                cmd.Parameters.AddWithValue("Dataconsegna", p.Datecosegna);
+                cmd.Parameters.AddWithValue("Idordini", p.Id);
+                int IsOk = cmd.ExecuteNonQuery();
+            }
+            catch { }
+            finally { conn.Close(); }
+        }
+
+        public void elminaOrdine(int id)
+        {
+            string connetionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
+            SqlConnection conn = new SqlConnection(connetionString);
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = "delete ordini where Idordini = @Idordini";
+                cmd.Parameters.AddWithValue("Idordini", id);
+                int IsOk = cmd.ExecuteNonQuery();
+            }
+            catch { }
+            finally { conn.Close(); }
+        }
+
+        public Ordini getspedizione(int id)
+        {
+            string connetionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
+            SqlConnection conn = new SqlConnection(connetionString);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM ordini where Idordini=@Idordini ", conn);
+            cmd.Parameters.AddWithValue("Idordini", id);
+            SqlDataReader sqlDataReader;
+
+            conn.Open();
+            sqlDataReader = cmd.ExecuteReader();
+            Ordini ordine = new Ordini();
+
+            while (sqlDataReader.Read())
+            {
+                ordine.Id = Convert.ToInt32(sqlDataReader["Idordini"]);
+                ordine.Dataspedizione = Convert.ToDateTime(sqlDataReader["Dataspedizione"]);
+                ordine.Peso = Convert.ToDecimal(sqlDataReader["peso"]);
+                ordine.Citta = sqlDataReader["Città"].ToString();
+                ordine.Indirizzo = sqlDataReader["Indirizzo"].ToString();
+                ordine.NominativoDestinatario = sqlDataReader["NominativoDestinatario"].ToString();
+                ordine.costo = Convert.ToInt64(sqlDataReader["costo"]);
+                ordine.descrizione = sqlDataReader["descrizione"].ToString();
+                ordine.Datecosegna = Convert.ToDateTime(sqlDataReader["Dataconsegna"]);
+            }
+            conn.Close();
+            return ordine;
         }
     }
 }

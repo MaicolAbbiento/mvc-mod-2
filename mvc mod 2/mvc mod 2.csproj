@@ -182,8 +182,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\login.cshtml" />
     <Content Include="Views\Home\sigin.cshtml" />
-    <Content Include="Views\Ordini\Index.cshtml" />
     <Content Include="Views\admin\gestionespedizioni.cshtml" />
+    <Content Include="Views\Ordini\spedizioni.cshtml" />
+    <Content Include="Views\admin\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

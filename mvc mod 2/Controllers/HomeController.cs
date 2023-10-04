@@ -22,12 +22,7 @@ namespace mvc_mod_2.Controllers
             Utente utente = new Utente();
             utente.GetUtentet1(p);
 
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Ordini");
-            }
-
-            return View();
+            return RedirectToAction("spedizioni", "Ordini");
         }
 
         [HttpGet]
@@ -41,11 +36,8 @@ namespace mvc_mod_2.Controllers
         {
             Utente utente = new Utente();
             utente.addDb(p);
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Ordini");
-            }
-            return View();
+
+            return RedirectToAction("spedizioni", "Ordini");
         }
     }
 }

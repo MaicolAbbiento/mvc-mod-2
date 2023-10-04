@@ -11,7 +11,7 @@ namespace mvc_mod_2.Controllers
     public class OrdiniController : Controller
     {
         [Authorize]
-        public ActionResult Index()
+        public ActionResult spedizioni()
         {
             return View();
         }
@@ -35,5 +35,7 @@ namespace mvc_mod_2.Controllers
             }
             return Json(o);
         }
+
+       
     }
 }

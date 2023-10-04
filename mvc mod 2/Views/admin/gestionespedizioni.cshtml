@@ -28,7 +28,7 @@
                 <td>@e.descrizione</td>
                 <td>@e.Datecosegna.ToShortDateString()</td>
                 @Html.ActionLink("Modifica", "Edit", new { id = e.Id }, new { @class = "btn btn-success" })
-                @Html.ActionLink("Elimina", "Delete", new { id = e.Id }, new { @class = "btn btn-danger" })
+                <a class="btn btn-danger" href="@Url.Action("eliminadaldatabase", "admin", new{ parameter = $"{e.Id}"})"> elimina </a>
             </tr>
         }
     </tbody>
