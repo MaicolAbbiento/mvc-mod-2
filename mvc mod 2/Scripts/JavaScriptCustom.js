@@ -21,14 +21,13 @@
             <th scope="col">Data Consegna</th>
         </tr>
     </thead>
-    <tbody id=a>
+    <tbody id="a">
     </tbody>
     `
                     $("#table").append(spedizone)
                 }
                 else { $("#divdettagli").slideUp() }
                 $.each(data, function (n, e) {
-                    $("#a").empty()
                     let spedizone = `
         <tr>
             <td>${e.Id}</td>

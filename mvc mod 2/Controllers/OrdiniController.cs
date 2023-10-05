@@ -8,11 +8,11 @@ using System.Web.Security;
 
 namespace mvc_mod_2.Controllers
 {
+    [Authorize]
     public class OrdiniController : Controller
     {
         private Ordini ordini = new Ordini();
 
-        [Authorize]
         public ActionResult spedizioni()
         {
             return View();

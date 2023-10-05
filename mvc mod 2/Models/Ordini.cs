@@ -52,6 +52,12 @@ namespace mvc_mod_2.Models
         public Ordini()
         { }
 
+        public Ordini(int id, string citta)
+        {
+            Id = id;
+            Citta = citta;
+        }
+
         public List<Ordini> getspedizione(Ordini p)
         {
             Utente utente = new Utente();
@@ -230,7 +236,7 @@ namespace mvc_mod_2.Models
                 SqlCommand cmd;
                 if (p1 == 1)
                 {
-                    cmd = new SqlCommand("SELECT * FROM ordini where Dataconsegna=getdate()", conn);
+                    cmd = new SqlCommand("SELECT * FROM ordini where Dataconsegna=CONVERT (date, GETDATE())", conn);
                 }
                 else
                 {
@@ -260,17 +266,32 @@ namespace mvc_mod_2.Models
             }
             catch { }
             finally { conn.Close(); }
-
-
         }
 
-        public List<Ordini> query3()
+        public void query3()
         {
             string connetionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
             SqlConnection conn = new SqlConnection(connetionString);
-            SqlCommand cmd = new SqlCommand("select città,  count(*) from ordini group by città", conn);
-            List<Ordini> ordini;
-            return ordini = new List<Ordini>();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("select città, count(*) as numero from ordini group by città", conn);
+                SqlDataReader sqlDataReader;
+                conn.Open();
+                sqlDataReader = cmd.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    Ordini ordine = new Ordini
+                        (
+                        Convert.ToInt32(sqlDataReader["numero"]),
+                        sqlDataReader["Città"].ToString()
+                        );
+
+                    ordini.Add(ordine);
+                }
+            }
+            catch { }
+            finally { conn.Close(); }
         }
     }
 }
