@@ -10,7 +10,6 @@ namespace mvc_mod_2.Controllers
     [Authorize(Roles = "Admin")]
     public class adminController : Controller
     {
-        // GET: admincontroller
         private dettagli p1 = new dettagli();
 
         public ActionResult gestionespedizioni()
