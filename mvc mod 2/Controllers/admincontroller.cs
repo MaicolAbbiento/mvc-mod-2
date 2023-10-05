@@ -11,6 +11,7 @@ namespace mvc_mod_2.Controllers
     public class adminController : Controller
     {
         // GET: admincontroller
+        private dettagli p1 = new dettagli();
 
         public ActionResult gestionespedizioni()
         {
@@ -112,6 +113,49 @@ namespace mvc_mod_2.Controllers
             p.query3();
 
             return Json(p.ordini, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult aggiugistato(int id)
+        {
+            List<string> o = new List<string> { "in magazino", "spedito", "primo smistamento", "utlima tappa", "in arrivo" };
+
+            Session["id"] = id;
+            ViewBag.o = o;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult aggiugistato(dettagli p, string stato)
+        {
+            p1 = p;
+            p1.stato = stato;
+            p1.idordini = (int)Session["id"];
+            p1.instertdettagli(p1);
+            return RedirectToAction($"aggiugistato/{p1.idordini}");
+        }
+
+        [HttpGet]
+        public ActionResult nuovoamin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult nuovoamin(Utente p)
+        {
+            Utente utente = new Utente();
+            utente.codicefiscale = utente.utete(p);
+            if (utente.codicefiscale != null && utente.codicefiscale != "nope")
+            {
+                int n = utente.admin(p.Password);
+                if (n == 1)
+                {
+                    utente.reutrnadmin(utente.codicefiscale, p.Password);
+                }
+            }
+
+            return View();
         }
     }
 }

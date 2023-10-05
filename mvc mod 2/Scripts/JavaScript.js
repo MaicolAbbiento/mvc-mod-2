@@ -33,7 +33,7 @@
             <td>${e.NominativoDestinatario}</td>
             <td>${e.costoString}</td>
             <td>${e.descrizione}</td>
-            <td>${e.DataConsegnastring} <a class="btn btn-info" href= "../Ordini/dettagli/${e.Id}"> dettagli</a>
+            <td>${e.DataConsegnastring}
             </td>
         </tr>`
 
@@ -76,7 +76,7 @@
             <td>${e.NominativoDestinatario}</td>
             <td>${e.costoString}</td>
             <td>${e.descrizione}</td>
-            <td>${e.DataConsegnastring} <a class="btn btn-info" href= "../Ordini/dettagli/${e.Id}"> dettagli</a>
+            <td>${e.DataConsegnastring}
             </td>
         </tr>`
 
@@ -104,13 +104,12 @@
                     let spedizone = `
         <tr>
             <td>${e.Id}</td>
-              <td>${e.Citta}</td>
+              <td>${e.Citta}
                 </tr>
               `
                     $("#a").append(spedizone)
-
                 })
             }
         })
-        })
+    })
 })

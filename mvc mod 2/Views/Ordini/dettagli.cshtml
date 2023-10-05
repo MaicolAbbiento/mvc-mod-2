@@ -18,5 +18,8 @@
             </tr>
         }
     </tbody>
-
-    </table>
+</table>
+@if (User.IsInRole("Admin"))
+{
+    <a class="btn btn-info" href="~/admin/aggiungistato/@Model[0].idordini"> agiungi stato</a>
+}

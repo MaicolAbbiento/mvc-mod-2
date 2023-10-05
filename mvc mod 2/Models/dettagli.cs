@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 
 namespace mvc_mod_2.Models
 {
@@ -14,11 +15,20 @@ namespace mvc_mod_2.Models
         public string luogo { get; set; }
         public string descrizione { get; set; }
         public string stato { get; set; }
-        public int statoint { get; set; }
         public int idordini { get; set; }
 
         public dettagli()
         { }
+
+        public dettagli(int idaggiornamenti, DateTime dataAggiornamento, string luogo, string descrizione, string stato, int idordini)
+        {
+            this.idaggiornamenti = idaggiornamenti;
+            this.dataAggiornamento = dataAggiornamento;
+            this.luogo = luogo;
+            this.descrizione = descrizione;
+            this.stato = stato;
+            this.idordini = idordini;
+        }
 
         public List<dettagli> lista = new List<dettagli>();
 
@@ -34,15 +44,19 @@ namespace mvc_mod_2.Models
 
                 conn.Open();
                 sqlDataReader = cmd.ExecuteReader();
-                dettagli dettaglio = new dettagli();
+                int n = 0;
                 while (sqlDataReader.Read())
                 {
-                    dettaglio.idaggiornamenti = Convert.ToInt32(sqlDataReader["idaggiornamenti"]);
-                    dettaglio.dataAggiornamento = Convert.ToDateTime(sqlDataReader["dataAggiornamento"]);
-                    dettaglio.descrizione = sqlDataReader["descrizione"].ToString();
-                    dettaglio.idordini = Convert.ToInt32(sqlDataReader["idordini"]);
-                    dettaglio.stato = sqlDataReader["stato"].ToString();
-                    dettaglio.luogo = sqlDataReader["luogo"].ToString();
+                    n++;
+                    dettagli dettaglio = new dettagli(
+                    n,
+                    Convert.ToDateTime(sqlDataReader["dataAggiornamento"]),
+                    sqlDataReader["luogo"].ToString(),
+                    sqlDataReader["descrizione"].ToString(),
+                    sqlDataReader["stato"].ToString(),
+                    Convert.ToInt32(sqlDataReader["idordini"])
+
+                 );
                     lista.Add(dettaglio);
                 }
             }
@@ -51,6 +65,33 @@ namespace mvc_mod_2.Models
                 lista.Clear();
             }
             finally { conn.Close(); }
+        }
+
+        public void instertdettagli(dettagli p)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
+            SqlConnection conn = new SqlConnection(connectionString);
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(
+                "INSERT INTO aggiornamenti VALUES (@dataAggiornamento , @descrizione,@idordini,@luogo, @stato)", conn);
+
+                cmd.Parameters.AddWithValue("dataAggiornamento", DateTime.Now);
+                cmd.Parameters.AddWithValue("descrizione", p.descrizione);
+                cmd.Parameters.AddWithValue("idordini", p.idordini);
+                cmd.Parameters.AddWithValue("luogo", p.luogo);
+                cmd.Parameters.AddWithValue("stato", p.stato);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
     }
 }

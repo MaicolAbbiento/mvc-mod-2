@@ -190,6 +190,8 @@
     <Content Include="Views\admin\dettagliprodotto.cshtml" />
     <Content Include="Views\Ordini\dettagli.cshtml" />
     <Content Include="Views\admin\queryPage.cshtml" />
+    <Content Include="Views\admin\aggiugistato.cshtml" />
+    <Content Include="Views\admin\nuovoamin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

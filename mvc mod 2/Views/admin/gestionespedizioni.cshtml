@@ -18,7 +18,7 @@
         @foreach (Ordini e in Model)
         {
             <tr>
-                <td>@e.Id</td>
+                <td>  @Html.ActionLink("aggiungistato", "aggiugistato", new { id = e.Id }, new { @class = "btn btn-success" }) @e.Id</td>
                 <td>@e.Dataspedizione.ToShortDateString()</td>
                 <td>@e.Peso kg</td>
                 <td>@e.Citta</td>
@@ -26,9 +26,10 @@
                 <td>@e.NominativoDestinatario</td>
                 <td>@e.costo.ToString("C2")</td>
                 <td>@e.descrizione</td>
-                <td>@e.Datecosegna.ToShortDateString()</td>
-                @Html.ActionLink("Modifica", "Edit", new { id = e.Id }, new { @class = "btn btn-success" })
-                <a class="btn btn-danger" href="@Url.Action("eliminadaldatabase", "admin", new{ parameter = $"{e.Id}"})"> elimina </a>
+                <td>
+                    @e.Datecosegna.ToShortDateString() @Html.ActionLink("Modifica", "Edit", new { id = e.Id }, new { @class = "btn btn-success" })
+                    <a class="btn btn-danger" href="@Url.Action("eliminadaldatabase", "admin", new{ parameter = $"{e.Id}"})"> elimina </a>
+                </td>
             </tr>
         }
     </tbody>

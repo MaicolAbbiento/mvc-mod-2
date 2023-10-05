@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -158,6 +159,59 @@ namespace mvc_mod_2.Models
             finally
             {
                 sqlConnection.Close();
+            }
+        }
+
+        public int admin(string p)
+        {
+            string conn = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
+            SqlConnection sqlConnection = new SqlConnection(conn);
+            try
+            {
+                sqlConnection.Open();
+
+                SqlCommand sqlCommand = new SqlCommand("Select * FROM password WHERE Password=@Password", sqlConnection);
+                sqlCommand.Parameters.AddWithValue("Password", p);
+
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+
+        public void reutrnadmin(string p, string a)
+        {
+            int c = admin(a);
+            if (c == 1)
+            {
+                string connetionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString.ToString();
+                SqlConnection conn = new SqlConnection(connetionString);
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "update cliente set admin=@admin  where codicefiscale = @codicefiscale";
+                    cmd.Parameters.AddWithValue("admin", true);
+                    cmd.Parameters.AddWithValue("codicefiscale", p);
+                    int IsOk = cmd.ExecuteNonQuery();
+                }
+                catch { }
+                finally { conn.Close(); }
             }
         }
     }
